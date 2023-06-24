@@ -1,0 +1,88 @@
+
+%%% Preamble Requirements %%%
+% \usepackage{geometry}
+% \usepackage{amsfonts}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+% \usepackage{tikz}
+
+% Optional packages such as sfmath set through python interface
+% \usepackage{sfmath}
+
+% \usetikzlibrary{arrows,chains,positioning,scopes,shapes.geometric,shapes.misc,shadows}
+
+%%% End Preamble Requirements %%%
+
+\input{"/Users/h1he2li3/opt/anaconda3/envs/dymos_rangemax/lib/python3.11/site-packages/pyxdsm/diagram_styles"}
+\begin{tikzpicture}
+
+\matrix[MatrixSetup]{
+%Row 0
+&
+&
+\node [DataIO] (output_Problem) {$I, load$};&
+&
+&
+\\
+%Row 1
+\node [DataIO] (left_output_Optimizer) {$min: Q$};&
+\node [optimizer] (Optimizer) {$\begin{array}{c}ScipyOptimizeDriver\end{array}$};&
+\node [DataInter] (Optimizer-Problem) {$min: Q$};&
+&
+&
+\\
+%Row 2
+\node [DataIO] (left_output_Problem) {$Qdot$};&
+\node [DataInter] (Problem-Optimizer) {$Qdot$};&
+\node [group] (Problem) {$\begin{array}{c}BatteryModel\end{array}$};&
+\node [DataInter] (Problem-Trajectory) {$I, load$};&
+&
+\\
+%Row 3
+\node [DataIO] (left_output_Trajectory) {$t_duration$};&
+&
+&
+\node [group] (Trajectory) {$\begin{array}{c}Trajectory\end{array}$};&
+\node [DataInter] (Trajectory-Phase) {$t_duration$};&
+\\
+%Row 4
+\node [DataIO] (left_output_Phase) {$Q, I$};&
+&
+\node [DataInter] (Phase-Problem) {$Q, I$};&
+&
+\node [group] (Phase) {$\begin{array}{c}Phase\end{array}$};&
+\\
+%Row 5
+&
+&
+&
+&
+&
+\\
+};
+
+% XDSM process chains
+
+
+\begin{pgfonlayer}{data}
+\path
+% Horizontal edges
+(Optimizer) edge [DataLine] (Optimizer-Problem)
+(Problem) edge [DataLine] (Problem-Optimizer)
+(Problem) edge [DataLine] (Problem-Trajectory)
+(Trajectory) edge [DataLine] (Trajectory-Phase)
+(Phase) edge [DataLine] (Phase-Problem)
+(Optimizer) edge [DataLine] (left_output_Optimizer)
+(Problem) edge [DataLine] (left_output_Problem)
+(Trajectory) edge [DataLine] (left_output_Trajectory)
+(Phase) edge [DataLine] (left_output_Phase)
+% Vertical edges
+(Optimizer-Problem) edge [DataLine] (Problem)
+(Problem-Optimizer) edge [DataLine] (Optimizer)
+(Problem-Trajectory) edge [DataLine] (Trajectory)
+(Trajectory-Phase) edge [DataLine] (Phase)
+(Phase-Problem) edge [DataLine] (Problem)
+(Problem) edge [DataLine] (output_Problem);
+\end{pgfonlayer}
+
+\end{tikzpicture}

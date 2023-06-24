@@ -1,0 +1,129 @@
+
+%%% Preamble Requirements %%%
+% \usepackage{geometry}
+% \usepackage{amsfonts}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+% \usepackage{tikz}
+
+% Optional packages such as sfmath set through python interface
+% \usepackage{sfmath}
+
+% \usetikzlibrary{arrows,chains,positioning,scopes,shapes.geometric,shapes.misc,shadows}
+
+%%% End Preamble Requirements %%%
+
+\input{"/Users/h1he2li3/opt/anaconda3/envs/dymos_rangemax/lib/python3.11/site-packages/pyxdsm/diagram_styles"}
+\begin{tikzpicture}
+
+\matrix[MatrixSetup]{
+%Row 0
+\node [Function] (mass) {$mass_comp$};&
+&
+&
+&
+&
+\node [DataInter] (mass-flight_eq) {$W_total$};&
+&
+\\
+%Row 1
+&
+\node [Function] (atmos) {$atmos$};&
+\node [DataInter] (atmos-tas) {$sos$};&
+&
+\node [DataInter] (atmos-q) {$rho$};&
+&
+\node [DataInter] (atmos-propulsion) {$pres, sos, rho$};&
+\\
+%Row 2
+&
+&
+\node [Function] (tas) {$tas_comp$};&
+\node [DataInter] (tas-gam) {$TAS$};&
+\node [DataInter] (tas-q) {$TAS$};&
+&
+&
+\node [DataInter] (tas-range_rate) {$TAS$};\\
+%Row 3
+&
+&
+&
+\node [Function] (gam) {$gam_comp$};&
+&
+\node [DataInter] (gam-flight_eq) {$gam$};&
+&
+\node [DataInter] (gam-range_rate) {$gam$};\\
+%Row 4
+&
+&
+&
+&
+\node [Function] (q) {$q_comp$};&
+\node [DataInter] (q-flight_eq) {$q$};&
+\node [DataInter] (q-propulsion) {$q$};&
+\\
+%Row 5
+&
+&
+&
+&
+&
+\node [Function] (flight_eq) {$flight_equilibrium$};&
+\node [DataInter] (flight_eq-propulsion) {$CT$};&
+\\
+%Row 6
+&
+&
+&
+&
+&
+&
+\node [Function] (propulsion) {$propulsion$};&
+\node [DataInter] (propulsion-range_rate) {$CT$};\\
+%Row 7
+&
+&
+&
+&
+&
+&
+&
+\node [Function] (range_rate) {$range_rate_comp$};\\
+};
+
+% XDSM process chains
+
+
+\begin{pgfonlayer}{data}
+\path
+% Horizontal edges
+(mass) edge [DataLine] (mass-flight_eq)
+(atmos) edge [DataLine] (atmos-propulsion)
+(atmos) edge [DataLine] (atmos-tas)
+(atmos) edge [DataLine] (atmos-q)
+(tas) edge [DataLine] (tas-gam)
+(tas) edge [DataLine] (tas-q)
+(tas) edge [DataLine] (tas-range_rate)
+(gam) edge [DataLine] (gam-flight_eq)
+(gam) edge [DataLine] (gam-range_rate)
+(q) edge [DataLine] (q-flight_eq)
+(q) edge [DataLine] (q-propulsion)
+(flight_eq) edge [DataLine] (flight_eq-propulsion)
+(propulsion) edge [DataLine] (propulsion-range_rate)
+% Vertical edges
+(mass-flight_eq) edge [DataLine] (flight_eq)
+(atmos-propulsion) edge [DataLine] (propulsion)
+(atmos-tas) edge [DataLine] (tas)
+(atmos-q) edge [DataLine] (q)
+(tas-gam) edge [DataLine] (gam)
+(tas-q) edge [DataLine] (q)
+(tas-range_rate) edge [DataLine] (range_rate)
+(gam-flight_eq) edge [DataLine] (flight_eq)
+(gam-range_rate) edge [DataLine] (range_rate)
+(q-flight_eq) edge [DataLine] (flight_eq)
+(q-propulsion) edge [DataLine] (propulsion)
+(flight_eq-propulsion) edge [DataLine] (propulsion)
+(propulsion-range_rate) edge [DataLine] (range_rate);
+\end{pgfonlayer}
+
+\end{tikzpicture}
